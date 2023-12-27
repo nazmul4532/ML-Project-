@@ -1,0 +1,1 @@
+        # image = image.astype(np.float32) / 255.0

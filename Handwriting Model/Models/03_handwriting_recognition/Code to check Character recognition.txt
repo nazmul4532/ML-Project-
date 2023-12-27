@@ -1,0 +1,31 @@
+#include <stdio.h>
+
+int isCharacterContained(char str[], char ch) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == ch) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int main() {
+    char inputString[100];
+    char searchChar;
+
+    printf("Enter a string: ");
+    fgets(inputString, sizeof(inputString), stdin);
+    while (1) {
+        printf("Enter a character to search: ");
+        scanf(" %c", &searchChar);
+
+        if (isCharacterContained(inputString, searchChar)) {
+            printf("The character '%c' is contained in the string.\n", searchChar);
+        } else {
+            printf("The character '%c' is not contained in the string.\n", searchChar);
+        }
+        while (getchar() != '\n');
+    }
+
+    return 0;
+}

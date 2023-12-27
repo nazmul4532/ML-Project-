@@ -1,0 +1,33 @@
+#--- words.txt ---------------------------------------------------------------#
+#
+# iam database word information
+#
+# format: a01-000u-00-00 ok 154 1 408 768 27 51 AT A
+#
+#     a01-000u-00-00  -> word id for line 00 in form a01-000u
+#     ok              -> result of word segmentation
+#                            ok: word was correctly
+#                            er: segmentation of word can be bad
+#
+#     154             -> graylevel to binarize the line containing this word
+#     1               -> number of components for this word
+#     408 768 27 51   -> bounding box around this word in x,y,w,h format
+#     AT              -> the grammatical tag for this word, see the
+#                        file tagset.txt for an explanation
+#     A               -> the transcription for this word
+#
+a01-000u-00-00 ok 154 408 768 27 51 AT Akash
+a01-000u-00-01 ok 154 507 766 213 48 NN Dihan
+a01-000u-00-02 ok 154 796 764 70 50 TO dog
+a01-000u-00-03 ok 154 919 757 166 78 VB Pokemon
+a01-000u-00-04 ok 154 1185 754 126 61 NPT Naruto
+a01-000u-00-05 ok 154 1438 746 382 73 NP Nazmul
+a01-000u-00-06 ok 154 1438 746 382 73 NP Sian
+a01-000u-00-07 ok 154 1438 746 382 73 NP sentiment
+a01-000u-00-08 ok 154 1438 746 382 73 NP Nowrid
+a01-000u-00-09 ok 154 1438 746 382 73 NP Decathlon
+a01-000u-00-10 ok 154 1438 746 382 73 NP Boring
+a01-000u-00-11 ok 154 1438 746 382 73 NP Cancer
+a01-000u-00-12 ok 154 1438 746 382 73 NP Ashsad
+a01-000u-00-13 ok 154 1438 746 382 73 NP analysis
+a01-000u-00-14 ok 154 1438 746 382 73 NP cat
