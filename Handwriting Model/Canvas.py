@@ -60,6 +60,7 @@ class ImageToWordGUI:
         self.color = 'black'
         self.image_counter = 0
         self.undo_list = []
+        self.suggestions = []
 
         self.canvas = Canvas(root, width=930, height=300, background="white", cursor="hand2", bd=2, relief="solid")
         self.canvas.place(x=130, y=10)
@@ -77,27 +78,25 @@ class ImageToWordGUI:
         self.undo_button = ttk.Button(root, text='Undo', command=self.undo_last)
         self.undo_button.place(x=30, y=260)
 
-        self.prediction_label = Label(root, text="Prediction: ", bg="#f2f3f5", font=("Helvetica", 25))
-        self.prediction_label.place(x=420, y=350)
+        self.prediction_label = Label(root, text="Prediction: ", bg="#f2f3f5", font=("Helvetica", 20))
+        self.prediction_label.place(x=420, y=330)
 
-        self.suggestions_label = Label(root, text=f"Suggested Corrections: {', '.join(suggestions)}", bg="#f2f3f5", font=("Helvetica", 12))
+        self.suggestions_label = Label(root, text=f"Suggested Corrections: {', '.join(self.suggestions)}", bg="#f2f3f5", font=("Helvetica", 12))
         self.suggestions_label.place(x=420, y=380)
 
         self.configs = BaseModelConfigs.load("Models/03_handwriting_recognition/202311290851/configs.yaml")
         self.model = ImageToWordModel(model_path=configs.model_path, char_list=configs.vocab)
-
+        
 
     def new_canvas(self):
         self.canvas.delete('all')
-
 
     def locate_xy(self, event):
         self.current_x = event.x
         self.current_y = event.y
 
     def add_line(self, event):
-        line = self.canvas.create_line((self.current_x, self.current_y, event.x, event.y),
-                                       width=8, fill=self.color, capstyle=ROUND, smooth=TRUE)
+        line = self.canvas.create_line((self.current_x, self.current_y, event.x, event.y), width=8, fill=self.color, capstyle=ROUND, smooth=TRUE)
         self.current_x, self.current_y = event.x, event.y
         self.undo_list.append(line)
 
@@ -112,7 +111,6 @@ class ImageToWordGUI:
 
         img = Image.new('RGB', (self.canvas.winfo_width(), self.canvas.winfo_height()), 'white')
         draw = ImageDraw.Draw(img)
-        spell = SpellChecker()
 
         for item in self.canvas.find_all():
             coords = self.canvas.coords(item)
@@ -127,8 +125,9 @@ class ImageToWordGUI:
 
         print("Prediction: ", prediction_text)
 
-        suggestions = spell.candidates(prediction_text)
-        self.suggestions_label.config(text=f"Suggested Corrections: {', '.join(suggestions)}")
+        spell = SpellChecker()
+        self.suggestions = spell.candidates(prediction_text)
+        self.suggestions_label.config(text=f"Suggested Corrections: {', '.join(self.suggestions)}")
 
 
 
