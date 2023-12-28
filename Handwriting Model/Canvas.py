@@ -80,11 +80,16 @@ class ImageToWordGUI:
         self.prediction_label = Label(root, text="Prediction: ", bg="#f2f3f5", font=("Helvetica", 25))
         self.prediction_label.place(x=420, y=350)
 
+        self.suggestions_label = Label(root, text=f"Suggested Corrections: {', '.join(suggestions)}", bg="#f2f3f5", font=("Helvetica", 12))
+        self.suggestions_label.place(x=420, y=380)
+
         self.configs = BaseModelConfigs.load("Models/03_handwriting_recognition/202311290851/configs.yaml")
         self.model = ImageToWordModel(model_path=configs.model_path, char_list=configs.vocab)
 
+
     def new_canvas(self):
         self.canvas.delete('all')
+
 
     def locate_xy(self, event):
         self.current_x = event.x
@@ -123,7 +128,7 @@ class ImageToWordGUI:
         print("Prediction: ", prediction_text)
 
         suggestions = spell.candidates(prediction_text)
-        print(f"Suggested Correction for the word \"{prediction_text}\" : {list(suggestions)}")
+        self.suggestions_label.config(text=f"Suggested Corrections: {', '.join(suggestions)}")
 
 
 
