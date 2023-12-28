@@ -126,8 +126,8 @@ class ImageToWordGUI:
         print("Prediction: ", prediction_text)
 
         spell = SpellChecker()
-        self.suggestions = spell.candidates(prediction_text)[:5]
-        self.suggestions_label.config(text=f"Suggested Corrections: {', '.join(self.suggestions)}")
+        self.suggestions = list(spell.candidates(prediction_text))[:5]
+        self.suggestions_label.config(text=f"Suggested Words: {', '.join(self.suggestions)}")
 
 
 
