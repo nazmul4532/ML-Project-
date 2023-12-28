@@ -1,11 +1,13 @@
 from tkinter import *
 from tkinter.colorchooser import askcolor
 from tkinter import ttk
+from tkinter import filedialog  # Added filedialog for saving images
 from PIL import Image, ImageDraw        # pip install pillow
 from datetime import datetime
 import cv2
 import typing
 import numpy as np
+
 
 from mltu.inferenceModel import OnnxInferenceModel
 from mltu.utils.text_utils import ctc_decoder, get_cer
@@ -45,8 +47,8 @@ model = ImageToWordModel(model_path=configs.model_path, char_list=configs.vocab)
 class ImageToWordGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("Canvas")
-        self.root.geometry("1050x570+150+50")
+        self.root.title("Handwriting Recognition")
+        self.root.geometry("1100x420+150+50")
         self.root.configure(bg="#f2f3f5")
         self.root.resizable(False, False)
 
@@ -56,25 +58,25 @@ class ImageToWordGUI:
         self.image_counter = 0
         self.undo_list = []
 
-        self.canvas = Canvas(root, width=930, height=300, background="Gainsboro", cursor="hand2")
+        self.canvas = Canvas(root, width=930, height=300, background="white", cursor="hand2", bd=2, relief="solid")
         self.canvas.place(x=130, y=10)
 
         self.canvas.bind('<Button-1>', self.locate_xy)
         self.canvas.bind('<B1-Motion>', self.add_line)
 
-        self.submit_button = Button(root, text='Submit', bg="Silver", width=12, height=3, command=self.save_image)
+        ttk.Style().configure("TButton", padding=6, relief="flat", background="#4CAF50", foreground="black")
+        self.submit_button = ttk.Button(root, text='Submit', command=self.save_image)
         self.submit_button.place(x=30, y=100)
 
-        self.eraser_button = Button(root, text='Erase All', bg="Silver", width=12, height=3, command=self.new_canvas)
+        self.eraser_button = ttk.Button(root, text='Erase All', command=self.new_canvas)
         self.eraser_button.place(x=30, y=180)
 
-        self.undo_button = Button(root, text='Undo', bg="Silver", width=12, height=3, command=self.undo_last)
+        self.undo_button = ttk.Button(root, text='Undo', command=self.undo_last)
         self.undo_button.place(x=30, y=260)
-        
-        self.prediction_label = Label(root, text="Prediction: ", bg="#f2f3f5", font=("Helvetica", 14))
-        self.prediction_label.place(x=30, y=350)
 
-        
+        self.prediction_label = Label(root, text="Prediction: ", bg="#f2f3f5", font=("Helvetica", 25))
+        self.prediction_label.place(x=420, y=350)
+
         self.configs = BaseModelConfigs.load("Models/03_handwriting_recognition/202311290851/configs.yaml")
         self.model = ImageToWordModel(model_path=configs.model_path, char_list=configs.vocab)
 
