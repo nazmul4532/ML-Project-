@@ -121,7 +121,10 @@ class ImageToWordGUI:
         self.prediction_label.config(text=f"Prediction: {prediction_text}")
 
         print("Prediction: ", prediction_text)
-        print("Suggested Correct Spelling: ", spell.correction(prediction_text))
+
+        suggestions = spell.candidates(prediction_text)
+        print(f"Suggested Correction for the word \"{prediction_text}\" : {list(suggestions)}")
+
 
 
     def preprocess_image(self, img):
