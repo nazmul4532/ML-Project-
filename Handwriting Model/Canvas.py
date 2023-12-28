@@ -8,6 +8,7 @@ import cv2
 import typing
 import numpy as np
 
+from spellchecker import SpellChecker
 
 from mltu.inferenceModel import OnnxInferenceModel
 from mltu.utils.text_utils import ctc_decoder, get_cer
@@ -20,6 +21,8 @@ from mltu.configs import BaseModelConfigs
 from mltu.preprocessors import ImageReader
 from mltu.transformers import ImageResizer, LabelIndexer, LabelPadding, ImageShowCV2
 from mltu.annotations.images import CVImage
+
+
 
 class ImageToWordModel(OnnxInferenceModel):
     def __init__(self, char_list: typing.Union[str, list], *args, **kwargs):
@@ -104,6 +107,7 @@ class ImageToWordGUI:
 
         img = Image.new('RGB', (self.canvas.winfo_width(), self.canvas.winfo_height()), 'white')
         draw = ImageDraw.Draw(img)
+        spell = SpellChecker()
 
         for item in self.canvas.find_all():
             coords = self.canvas.coords(item)
@@ -116,7 +120,9 @@ class ImageToWordGUI:
         prediction_text = self.predict_text(processed_img)
         self.prediction_label.config(text=f"Prediction: {prediction_text}")
 
-        print("Prediction:", prediction_text)
+        print("Prediction: ", prediction_text)
+        print("Suggested Correct Spelling: ", spell.correction(prediction_text))
+
 
     def preprocess_image(self, img):
         # Add any necessary preprocessing steps here
